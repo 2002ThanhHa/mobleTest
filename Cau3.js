@@ -1,64 +1,74 @@
-import React, { useState, useRef } from 'react';
-import { View,Animated, Button } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Image, StyleSheet, Animated, Easing } from 'react-native';
 
 const Cau3 = () => {
-  const squarePosition = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
-  const [animation, setAnimation] = useState(null);
+  const lac = useRef(new Animated.Value(0)).current;
 
-  const startAnimation = () => {
-    if (animation) {
-      animation.stop();
-    }
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(lac, {
+          toValue: 10,
+          duration: 100,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+        Animated.timing(lac, {
+          toValue: -10,
+          duration: 100,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+        Animated.timing(lac, {
+          toValue: 0,
+          duration: 100,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+      ]),
+      {
+        iterations: -1, // lặp vô hạn
+      }
+    ).start();
+  }, []);
 
-    const newAnimation = Animated.timing(squarePosition, {
-      toValue: { x: 50, y: 300 },
-      duration: 2000,
-      useNativeDriver: false,
-    });
-
-    setAnimation(newAnimation);
-    newAnimation.start();
-  };
-
-  const stopAnimation = () => {
-    if (animation) {
-      animation.stop();
-    }
-  };
-
-  const restartAnimation = () => {
-    stopAnimation();
-    squarePosition.setValue({ x: 0, y: 0 });
-  };
+  const interpolatedRotateAnimation = lac.interpolate({
+    inputRange: [-10, 0, 10],
+     outputRange: ['-5deg', '0deg', '5deg'],
+    
+  });
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Animated.View
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: 'pink',
-          transform: [{ translateX: squarePosition.x }, { translateY: squarePosition.y }],
-        }}
+    <View style={styles.container}>
+      
+       <View style= {styles.hinh}>
+       <Animated.Image
+        source={require('./assets/hinh.jpg')} 
+        style={[styles.bellImage, { transform: [{ rotate: interpolatedRotateAnimation }] }]}
       />
-      <View style={{ justifyContent: "space-evenly", flexBasis: 200,  }}>
-        <Button title="start " onPress={startAnimation} />
-        <Button title="Stop" onPress={stopAnimation} />
-        <Button title="Restart" onPress={restartAnimation} />
-        
-      </View>
+       </View>
+      
     </View>
   );
 };
 
-const styles = {
-  button: {
-    backgroundColor: 'green',
-    padding: 10,
-    margin: 5,
-    borderRadius: 5,
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+   
+  },
+  bellImage: {
+    width: 200, 
+    height: 200, 
+  },
+  hinh:{
+    paddingRight: 20, 
+    paddingBottom: 20, 
+    
+    alignItems: 'flex-end',
   },
  
-};
+});
 
 export default Cau3;

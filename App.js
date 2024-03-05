@@ -5,7 +5,7 @@ import Cau2 from "./Cau2"
 import Cau3 from "./Cau3"
 export default function App() {
   return (
-    <Cau2/>
+    <Cau3/>
   );
 }
 
