@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View,Animated, Button } from 'react-native';
 
-const Cau2 = () => {
+const Cau3 = () => {
   const squarePosition = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const [animation, setAnimation] = useState(null);
 
@@ -51,5 +51,14 @@ const Cau2 = () => {
   );
 };
 
+const styles = {
+  button: {
+    backgroundColor: 'green',
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+  },
+ 
+};
 
-export default Cau2;
+export default Cau3;
